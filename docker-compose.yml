@@ -1,0 +1,39 @@
+version: "3.3"
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    links:
+      - store
+      - pet
+      - user
+
+  store:
+    image: petstore/store:latest
+    secrets:
+      - store-settings.php # contains a password, thus stored as a secret
+    links:
+      - store-mysql
+
+  store-mysql:
+    image: mysql:5.7
+    volumes:
+      - store-mysql-data:/var/lib/mysql
+      - ./store-mysql/initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_DATABASE: store
+
+  # Stubs for the other microservices
+  pet:
+    image: php:fpm-alpine
+  user:
+    image: php:fpm-alpine
+
+secrets:
+  store-settings.php:
+    file: ./store/settings.php
+
+volumes:
+  store-mysql-data:

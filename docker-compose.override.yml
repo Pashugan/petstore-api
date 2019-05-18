@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+  nginx:
+    volumes:
+      - ./store:/usr/src/store
+    ports:
+      - "80:80"
+
+  store:
+    build: ./store
+    volumes:
+      - ./store/public:/usr/src/app/public
+      - ./store/src:/usr/src/app/src
+    environment:
+      DEBUG: "true"
+
+  store-mysql:
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
