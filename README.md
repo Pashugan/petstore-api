@@ -18,9 +18,18 @@ $ docker build -t petstore/store:latest store
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 ~~~
 
+### Logs
+
+1. You might want to open the logs in a separate terminal
+~~~
+$ docker-compose logs -f
+~~~
+
 ### Testing
 
-1. Execute the following commands
+1. Wait a few seconds to let MySQL database initialize
+
+2. Execute the following commands
 ~~~
 # Get the prepopulated order
 $ curl 'http://localhost/v2/store/order/1'
